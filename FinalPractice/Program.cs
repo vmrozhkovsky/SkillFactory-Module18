@@ -15,22 +15,10 @@ using YoutubeExplode;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Exceptions;
 
-
-// test(videoUrl);
-// async void test(string videoUrl)
-// {
-//     YoutubeClient youtubeClient = new YoutubeClient();
-//     var videoInfo = youtubeClient.Videos.GetAsync(videoUrl);
-//     string info = videoInfo.Result.Title;
-//     Console.WriteLine($"Название: {info}");
-//     // await Console.Out.WriteLineAsync($"Продолжительность: {info}");
-//     // Console.Out.WriteLineAsync($"Описание: {videoInfo.Description}");
-// }
 string videoUrl;
-// создадим отправителя
+
 var sender = new Sender();
-      
-// создадим получателя
+
 var receiver = new Receiver();
 Console.WriteLine("Введите адрес видео:");
 videoUrl = Console.ReadLine();
