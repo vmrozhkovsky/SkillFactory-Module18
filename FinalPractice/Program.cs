@@ -42,7 +42,7 @@ switch (UserСhoice)
         sender.SetCommand(getVideoInfo);
         await sender.Run();
         break;
-    // Передача команды на скачивание видео с запросом на путь для скачивания и проверкой правильности ввода.
+    // Передача команды на загрузку видео с запросом на путь для загрузки и проверкой правильности ввода.
     case "2":
         if (!File.Exists(Environment.CurrentDirectory + @"\ffmpeg.exe"))
         {

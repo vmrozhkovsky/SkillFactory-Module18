@@ -33,7 +33,7 @@ public class Receiver
         Console.WriteLine($"Описание: {videoInfo.Description}");
     }
 
-    // Метод для загрузки видео. Получает проверенную ссылку и проверенный путь для загрузки.
+    // Метод для загрузки видео с обработкой ошибок. Получает проверенную ссылку и проверенный путь для загрузки.
     public async Task DownloadVideo(string videoUrl, string pathToDownloadDir)
     {
         try
