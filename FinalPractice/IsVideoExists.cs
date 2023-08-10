@@ -1,5 +1,6 @@
 ﻿namespace FinalPractice;
 
+// Класс команды для тестирования ссылок на видео
 public class IsVideoExists : Command
 {
     private Receiver _receiver;

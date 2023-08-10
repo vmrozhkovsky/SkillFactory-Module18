@@ -4,9 +4,12 @@ using YoutubeExplode.Exceptions;
 
 namespace FinalPractice;
 
+// Класс Receiver для выполнения команд
 public class Receiver
 {
     private YoutubeClient _youtubeClient = new YoutubeClient();
+    
+    // Метод для тестирования ссылок на видео. Получает ссылку. Возвращает bool в зависимости от результата тестирования. 
     public bool IsVideoExists(string videoUrl)
     {
         try
@@ -20,6 +23,8 @@ public class Receiver
             return true;
         }
     }
+    
+    // Метод для получения информации о видео. Получает проверенную ссылку.
     public async Task GetVideoInfo(string videoUrl)
     {
         var videoInfo = await _youtubeClient.Videos.GetAsync(videoUrl);
@@ -28,6 +33,7 @@ public class Receiver
         Console.WriteLine($"Описание: {videoInfo.Description}");
     }
 
+    // Метод для загрузки видео. Получает проверенную ссылку и проверенный путь для загрузки.
     public async Task DownloadVideo(string videoUrl, string pathToDownloadDir)
     {
         try
@@ -40,7 +46,7 @@ public class Receiver
             await _youtubeClient.Videos.DownloadAsync(
                 videoUrl, 
                 filePath,
-            o => o.SetPreset(ConversionPreset.UltraFast).SetFFmpegPath(@"C:\Video\test\ffmpeg.exe"), 
+            o => o.SetPreset(ConversionPreset.UltraFast).SetFFmpegPath(Environment.CurrentDirectory + @"\ffmpeg.exe"),
                 progress
                 );
             Console.WriteLine($"Видео успешно загружено в файл {filePath}.");

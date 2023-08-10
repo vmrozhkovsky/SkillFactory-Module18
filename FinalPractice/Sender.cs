@@ -1,5 +1,6 @@
 ﻿namespace FinalPractice;
 
+// Класс Sender для отправки команд
 public class Sender
 {
     Command _command;

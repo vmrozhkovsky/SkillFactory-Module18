@@ -1,5 +1,5 @@
 ﻿namespace FinalPractice;
-
+// Класс команды для загрузки видео
 public class DownloadVideo : Command
 {
     private Receiver _receiver;

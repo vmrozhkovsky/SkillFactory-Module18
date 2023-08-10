@@ -1,5 +1,6 @@
 ﻿namespace FinalPractice;
 
+// Класс команды для получения информации о видео
 public class GetVideoInfo : Command
 {
     private Receiver _receiver;
