@@ -1,8 +1,6 @@
 ﻿using YoutubeExplode;
 using YoutubeExplode.Converter;
 using YoutubeExplode.Exceptions;
-using YoutubeExplode.Videos;
-using YoutubeExplode.Videos.Streams;
 
 namespace FinalPractice;
 
@@ -30,18 +28,30 @@ public class Receiver
         Console.WriteLine($"Описание: {videoInfo.Description}");
     }
 
-    public async Task DownloadVideo(string videoUrl)
+    public async Task DownloadVideo(string videoUrl, string pathToDownloadDir)
     {
         try
         {
-            // await _youtubeClient.Videos.DownloadAsync(videoUrl, @"C:\video\test\video.mp4");
-            var streamManifest = await _youtubeClient.Videos.Streams.GetManifestAsync(videoUrl);
-            var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
-            await _youtubeClient.Videos.Streams.DownloadAsync(streamInfo, @"C:\video\test\video.mp4");
+            Console.WriteLine("Начинаем загружать видео...");
+            var progress = new Progress<double>();
+            progress.ProgressChanged += (s,e) => Console.WriteLine($"Загружено: {e:P2}");
+            var videoInfo = await _youtubeClient.Videos.GetAsync(videoUrl);
+            string filePath = pathToDownloadDir + videoInfo.Title + ".mp4";
+            await _youtubeClient.Videos.DownloadAsync(
+                videoUrl, 
+                filePath,
+            o => o.SetPreset(ConversionPreset.UltraFast).SetFFmpegPath(@"C:\Video\test\ffmpeg.exe"), 
+                progress
+                );
+            Console.WriteLine($"Видео успешно загружено в файл {filePath}.");
         }
         catch (VideoUnavailableException)
         {
             Console.WriteLine("Видео не доступно!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Возникла непредвиденная ошибка {ex.Message}!");
         }
     }
 }

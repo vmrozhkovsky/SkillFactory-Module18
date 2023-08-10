@@ -1,41 +1,69 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using FinalPractice;
 
-// using YoutubeExplode;
-// using YoutubeExplode.Converter;
-
-// string outputFilePath = @"C:\Video\test";
-// var youtubeclient = new YoutubeClient();
-// var video = youtubeclient.Videos.GetAsync(videoUrl);
-// Console.WriteLine($"Название: {video.Title}");
-// Console.WriteLine($"Продолжительность: {video.Duration}");
-// Console.WriteLine($"Автор: {video.Author}");
-
-using FinalPractice;
-using YoutubeExplode;
-using YoutubeExplode.Converter;
-using YoutubeExplode.Exceptions;
-
-string videoUrl;
+string VideoUrl;
+string PathToDonwloadDir = null;
+string UserСhoice = null;
+bool UserChoiceCorrect = true;
 
 var sender = new Sender();
+while (UserChoiceCorrect)
+{
+    Console.WriteLine("Выберите необходимое действие:\n" +
+                      "1 - Получить информацию о видео.\n" +
+                      "2 - Загрузить видео на диск.");
+    UserСhoice = Console.ReadLine();
+    if (UserСhoice == "1" || UserСhoice == "2")
+    {
+        UserChoiceCorrect = false;
+    }
+    else
+    {
+        Console.WriteLine("Неверный ввод. Попробуйте еще раз.");
+    }
+}
 
 var receiver = new Receiver();
 Console.WriteLine("Введите адрес видео:");
-videoUrl = Console.ReadLine();
+VideoUrl = Console.ReadLine();
 
-var isVideoExists = new IsVideoExists(receiver, videoUrl);
+var isVideoExists = new IsVideoExists(receiver, VideoUrl);
 sender.SetCommand(isVideoExists);
-while (sender.Test(videoUrl))
+while (sender.Test(VideoUrl))
 {
-    videoUrl = Console.ReadLine();
+    VideoUrl = Console.ReadLine();
 }
+switch (UserСhoice)
+{
+    case "1":
+        var getVideoInfo = new GetVideoInfo(receiver, VideoUrl);
+        sender.SetCommand(getVideoInfo);
+        await sender.Run();
+        break;
+    case "2":
+        UserChoiceCorrect = true;
+        while (UserChoiceCorrect)
+        {
+            Console.WriteLine("Введите адрес папки для загрузки:");
+            PathToDonwloadDir = Console.ReadLine();
+            if (!PathToDonwloadDir.EndsWith(@"\"))
+            {
+                PathToDonwloadDir = PathToDonwloadDir + @"\";
+            }
+            DirectoryInfo InitialDir = new DirectoryInfo(PathToDonwloadDir);
+            if (InitialDir.Exists)
+            {
+                UserChoiceCorrect = false;
+            }
+            else
+            {
+                Console.WriteLine("Неверный ввод. Попробуйте еще раз.");
+            }
+        }
 
-var getVideoInfo = new GetVideoInfo(receiver, videoUrl);
-sender.SetCommand(getVideoInfo);
-await sender.Run();
-
-var downloadVideo = new DownloadVideo(receiver, videoUrl);
-sender.SetCommand(downloadVideo);
-await sender.Run();
+        var downloadVideo = new DownloadVideo(receiver, VideoUrl, PathToDonwloadDir);
+        sender.SetCommand(downloadVideo);
+        await sender.Run();
+        break;
+}
 
 
