@@ -31,6 +31,7 @@ public class Receiver
         Console.WriteLine($"Название: {videoInfo.Title}");
         Console.WriteLine($"Продолжительность: {videoInfo.Duration}");
         Console.WriteLine($"Описание: {videoInfo.Description}");
+        Console.ReadLine();
     }
 
     // Метод для загрузки видео с обработкой ошибок. Получает проверенную ссылку и проверенный путь для загрузки.
@@ -50,14 +51,17 @@ public class Receiver
                 progress
                 );
             Console.WriteLine($"Видео успешно загружено в файл {filePath}.");
+            Console.ReadLine();
         }
         catch (VideoUnavailableException)
         {
             Console.WriteLine("Видео не доступно!");
+            Console.ReadLine();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Возникла непредвиденная ошибка {ex.Message}!");
+            Console.ReadLine();
         }
     }
 }
